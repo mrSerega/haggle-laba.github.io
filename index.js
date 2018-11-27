@@ -7,15 +7,22 @@ const names = ['sepalLength', 'sepalWidth', 'petalLength', 'petalWidth', 'type']
 
 let seperationSize; // To seperate training and test data
 
-let data = [], X = [], y = [];
+let data = [],
+    X = [],
+    y = [];
 
-let trainingSetX = [], trainingSetY = [], testSetX = [], testSetY = [];
+let trainingSetX = [],
+    trainingSetY = [],
+    testSetX = [],
+    testSetY = [];
 
 const express = require('express')
 const app = express()
 const port = 3000
 
 app.use('/index.html', express.static(__dirname + '/index.html'));
+app.use('/js/draw.js', express.static(__dirname + '/js/draw.js'));
+app.use('/js/Chart.min.js', express.static(__dirname + '/js/Chart.min.js'));
 
 app.listen(port, (err) => {
     if (err) {
@@ -24,9 +31,12 @@ app.listen(port, (err) => {
     console.log(`server is listening on ${port}`)
 })
 
-var errors = []; // <-----
+var errors = []; // 																									<-----
 
-csv({ noheader: true, headers: names }, errors) // <-------
+csv({
+        noheader: true,
+        headers: names
+    }, errors) // 										<-------
     .fromFile(csvFilePath)
     .on('json', (jsonObj) => {
         data.push(jsonObj); // Push each object to data Array
@@ -34,10 +44,10 @@ csv({ noheader: true, headers: names }, errors) // <-------
     .on('done', (error) => {
         seperationSize = 0.7 * data.length;
         data = shuffleArray(data);
-        dressData(errors); //<------
+        dressData(errors); //													
     });
 
-function dressData(errors) { //<----
+function dressData(errors) { //																				<----
 
     /**
      * There are three different types of Iris flowers
@@ -78,25 +88,27 @@ function dressData(errors) { //<----
     testSetX = X.slice(seperationSize);
     testSetY = y.slice(seperationSize);
 
-    for (let i = 0; i < testSetX.length; i++) { // < ----
+    for (let i = 0; i < testSetX.length; i++) { // 																	< ----
         // console.log('*** ', i, ' ***');
-        train(i + 1, errors); // <---
+        train(i + 1, errors); // 																										<---
     }
 
-    console.log(errors); // < -------
+    //    console.log(errors); // 																												< -------
 }
 
-function train(k, errors) {// <-----
-    knn = new KNN(trainingSetX, trainingSetY, { k }); //<------
-    test(errors);//<------
+function train(k, errors) { // <-----
+    knn = new KNN(trainingSetX, trainingSetY, {
+        k
+    }); //															<------
+    test(errors); //<------
 }
 
-function test(errors) {//<------
+function test(errors) { //																															<------
     const result = knn.predict(testSetX);
     // console.log('result', result)
     const testSetLength = testSetX.length;
     const predictionError = error(result, testSetY);
-    errors.push(predictionError); // <-------
+    errors.push(predictionError); // 																									<-------
     // console.log(`Test Set Size = ${testSetLength} and number of Misclassifications = ${predictionError}`);
     // predict();
 }
@@ -140,7 +152,44 @@ function shuffleArray(array) {
     return array;
 }
 
-app.post('/index', function (req, res) { //<-----
-    console.log('POST POST POST', errors)//<-----
-    res.send({ err: errors.map((value, index) => ({ "x": index + 1, "y": value })) })//<-----
-});//<-----
+app.post('/index', function (req, res) { //																				<-----
+    console.log('POST POST POST', errors);
+    res.send({
+        err: errors.map((value, index) => ({
+            "x": index + 1,
+            "y": value / errors.length * 100
+        }))
+    })
+})
+
+app.post('/redraw', function (req, res) { //												
+    errors = [];
+    data = [],
+        X = [],
+        y = [];
+
+    trainingSetX = [],
+        trainingSetY = [],
+        testSetX = [],
+        testSetY = [];
+    csv({
+            noheader: true,
+            headers: names
+        }, errors) // 										<-------
+        .fromFile(csvFilePath)
+        .on('json', (jsonObj) => {
+            data.push(jsonObj); // Push each object to data Array
+        })
+        .on('done', (error) => {
+            seperationSize = 0.7 * data.length;
+            data = shuffleArray(data);
+            dressData(errors); //	
+            res.send({
+                err: errors.map((value, index) => ({
+                    "x": index + 1,
+                    "y": value / errors.length * 100
+                }))
+            })
+        });
+
+})
