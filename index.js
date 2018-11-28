@@ -31,7 +31,8 @@ app.listen(port, (err) => {
     console.log(`server is listening on ${port}`)
 })
 
-var errors = []; // 																									<-----
+var errors = [];
+console.log('OK OK OK')
 
 csv({
     noheader: true,
@@ -163,7 +164,8 @@ app.post('/index', function (req, res) {
     })
 })
 
-app.post('/redraw', function (req, res) { //
+app.post('/redraw', function (req, res) {
+    console.log('redraw requested')
     errors = [];
     data = [],
         X = [],
@@ -176,10 +178,10 @@ app.post('/redraw', function (req, res) { //
     csv({
         noheader: true,
         headers: names
-    }, errors) // 										<-------
+    }, errors)
         .fromFile(csvFilePath)
         .on('json', (jsonObj) => {
-            data.push(jsonObj); // Push each object to data Array
+            data.push(jsonObj);
         })
         .on('done', (error) => {
             seperationSize = 0.7 * data.length;
