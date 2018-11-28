@@ -34,9 +34,9 @@ app.listen(port, (err) => {
 var errors = []; // 																									<-----
 
 csv({
-        noheader: true,
-        headers: names
-    }, errors) // 										<-------
+    noheader: true,
+    headers: names
+}, errors) // 										<-------
     .fromFile(csvFilePath)
     .on('json', (jsonObj) => {
         data.push(jsonObj); // Push each object to data Array
@@ -44,7 +44,7 @@ csv({
     .on('done', (error) => {
         seperationSize = 0.7 * data.length;
         data = shuffleArray(data);
-        dressData(errors); //													
+        dressData(errors); //
     });
 
 function dressData(errors) { //																				<----
@@ -152,7 +152,8 @@ function shuffleArray(array) {
     return array;
 }
 
-app.post('/index', function (req, res) { //																				<-----
+app.post('/index', function (req, res) {
+    console.log('index was requested')
     console.log('POST POST POST', errors);
     res.send({
         err: errors.map((value, index) => ({
@@ -162,7 +163,7 @@ app.post('/index', function (req, res) { //																				<-----
     })
 })
 
-app.post('/redraw', function (req, res) { //												
+app.post('/redraw', function (req, res) { //
     errors = [];
     data = [],
         X = [],
@@ -173,9 +174,9 @@ app.post('/redraw', function (req, res) { //
         testSetX = [],
         testSetY = [];
     csv({
-            noheader: true,
-            headers: names
-        }, errors) // 										<-------
+        noheader: true,
+        headers: names
+    }, errors) // 										<-------
         .fromFile(csvFilePath)
         .on('json', (jsonObj) => {
             data.push(jsonObj); // Push each object to data Array
@@ -183,7 +184,7 @@ app.post('/redraw', function (req, res) { //
         .on('done', (error) => {
             seperationSize = 0.7 * data.length;
             data = shuffleArray(data);
-            dressData(errors); //	
+            dressData(errors); //
             res.send({
                 err: errors.map((value, index) => ({
                     "x": index + 1,
