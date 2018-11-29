@@ -2,10 +2,11 @@ const KNN = require('ml-knn');
 const csv = require('csvtojson');
 const prompt = require('prompt');
 let knn;
+var path = require("path");
 //const csvFilePath = 'iris.csv'; // Data
 const csvFilePath = 'gapp.csv'; // Data
 //const names = ['sepalLength', 'sepalWidth', 'petalLength', 'petalWidth', 'type']; // For header
- const names = ['app', 'category', 'rating', 'reviews', 'size', 'installs', 'type', 'price', 'content rating', 'genres', 'last update', 'current ver', 'android var']; // For header
+const names = ['app', 'category', 'rating', 'reviews', 'size', 'installs', 'type', 'price', 'content rating', 'genres', 'last update', 'current ver', 'android var']; // For header
 
 let seperationSize; // To seperate training and test data
 
@@ -42,17 +43,17 @@ csv({
 }, errors)
     .fromFile(csvFilePath)
     .on('json', (jsonObj) => {
-    
-         briefObj = {
-             'reviews': parseFloat(jsonObj.reviews),
-             'installs': parseFloat(jsonObj.installs.slice(0,jsonObj.installs.length-1)),
-             'price': parseFloat(jsonObj.price),
-             'rating': parseFloat(jsonObj.rating),
-             'type': jsonObj.category // required field
-         }
-         
-         console.log(briefObj.type)
-    
+
+        briefObj = {
+            'reviews': parseFloat(jsonObj.reviews),
+            'installs': parseFloat(jsonObj.installs.slice(0, jsonObj.installs.length - 1)),
+            'price': parseFloat(jsonObj.price),
+            'rating': parseFloat(jsonObj.rating),
+            'type': jsonObj.category // required field
+        }
+
+        //  console.log(briefObj.type)
+
         data.push(briefObj); // Push each object to data Array
     })
     .on('done', (error) => {
@@ -105,7 +106,7 @@ function dressData(errors) { //																				<----
     testSetY = y.slice(seperationSize);
 
     for (let i = 0; i < testSetX.length; i++) { // 																	< ----
-         console.log('*** ', i, ' ***');
+        console.log('*** ', i, ' ***');
         train(i + 1, errors); // 																										<---
     }
 
@@ -168,6 +169,12 @@ function shuffleArray(array) {
     return array;
 }
 
+app.get('/', function (req, res) {
+
+    res.sendFile(path.join(__dirname + '/hello.html'));
+
+});
+
 app.get('/hello', function (req, res) {
     console.log('hello was requested')
 })
@@ -200,7 +207,17 @@ app.post('/redraw', function (req, res) {
     }, errors)
         .fromFile(csvFilePath)
         .on('json', (jsonObj) => {
-            data.push(jsonObj);
+            briefObj = {
+                'reviews': parseFloat(jsonObj.reviews),
+                'installs': parseFloat(jsonObj.installs.slice(0, jsonObj.installs.length - 1)),
+                'price': parseFloat(jsonObj.price),
+                'rating': parseFloat(jsonObj.rating),
+                'type': jsonObj.category // required field
+            }
+
+            //  console.log(briefObj.type)
+
+            data.push(briefObj); // Push each object to data Array
         })
         .on('done', (error) => {
             seperationSize = 0.7 * data.length;

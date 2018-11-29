@@ -13,7 +13,7 @@ var drawChart = function (data) {
             return value.x
         }),
         datasets: [{
-            label: "Car Speed (mph)",
+            label: "Errors",
             data: data,
             lineTension: 0,
             fill: false,
@@ -27,7 +27,7 @@ var drawChart = function (data) {
             pointHitRadius: 30,
             pointBorderWidth: 2,
             pointStyle: 'rectRounded'
-      }]
+        }]
     };
 
     var chartOptions = {
