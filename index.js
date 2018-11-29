@@ -33,12 +33,13 @@ app.listen(port, (err) => {
     console.log(`server is listening on ${port}`)
 })
 
-var errors = []; // 																									<-----
+var errors = [];
+console.log('OK OK OK')
 
 csv({
-        noheader: true,
-        headers: names
-    }, errors) // 										<-------
+    noheader: true,
+    headers: names
+}, errors)
     .fromFile(csvFilePath)
     .on('json', (jsonObj) => {
     
@@ -57,8 +58,10 @@ csv({
     .on('done', (error) => {
         seperationSize = 0.7 * data.length;
         data = shuffleArray(data);
-        dressData(errors); //													
+        dressData(errors);
     });
+
+console.log(error)
 
 function dressData(errors) { //																				<----
 
@@ -165,7 +168,12 @@ function shuffleArray(array) {
     return array;
 }
 
-app.post('/index', function (req, res) { //																				<-----
+app.get('/hello', function (req, res) {
+    console.log('hello was requested')
+})
+
+app.post('/index', function (req, res) {
+    console.log('index was requested')
     console.log('POST POST POST', errors);
     res.send({
         err: errors.map((value, index) => ({
@@ -175,7 +183,8 @@ app.post('/index', function (req, res) { //																				<-----
     })
 })
 
-app.post('/redraw', function (req, res) { //												
+app.post('/redraw', function (req, res) {
+    console.log('redraw requested')
     errors = [];
     data = [],
         X = [],
@@ -186,17 +195,17 @@ app.post('/redraw', function (req, res) { //
         testSetX = [],
         testSetY = [];
     csv({
-            noheader: true,
-            headers: names
-        }, errors) // 										<-------
+        noheader: true,
+        headers: names
+    }, errors)
         .fromFile(csvFilePath)
         .on('json', (jsonObj) => {
-            data.push(jsonObj); // Push each object to data Array
+            data.push(jsonObj);
         })
         .on('done', (error) => {
             seperationSize = 0.7 * data.length;
             data = shuffleArray(data);
-            dressData(errors); //	
+            dressData(errors); //
             res.send({
                 err: errors.map((value, index) => ({
                     "x": index + 1,
