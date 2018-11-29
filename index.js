@@ -37,7 +37,7 @@ console.log('OK OK OK')
 csv({
     noheader: true,
     headers: names
-}, errors) // 										<-------
+}, errors)
     .fromFile(csvFilePath)
     .on('json', (jsonObj) => {
         data.push(jsonObj); // Push each object to data Array
@@ -45,8 +45,10 @@ csv({
     .on('done', (error) => {
         seperationSize = 0.7 * data.length;
         data = shuffleArray(data);
-        dressData(errors); //
+        dressData(errors);
     });
+
+console.log(error)
 
 function dressData(errors) { //																				<----
 
@@ -152,6 +154,10 @@ function shuffleArray(array) {
     }
     return array;
 }
+
+app.get('/hello', function (req, res) {
+    console.log('hello was requested')
+})
 
 app.post('/index', function (req, res) {
     console.log('index was requested')
