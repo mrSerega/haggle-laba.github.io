@@ -17,12 +17,12 @@ var drawChart = function (data) {
             data: data,
             lineTension: 0,
             fill: false,
-            borderColor: 'orange',
+            borderColor: 'white',
             backgroundColor: 'transparent',
             borderDash: [5, 5],
-            pointBorderColor: 'orange',
-            pointBackgroundColor: 'rgba(255,150,0,0.5)',
-            pointRadius: 5,
+            pointBorderColor: 'white',
+            pointBackgroundColor: 'white',
+            pointRadius: 1,
             pointHoverRadius: 10,
             pointHitRadius: 30,
             pointBorderWidth: 2,
@@ -36,7 +36,7 @@ var drawChart = function (data) {
             position: 'top',
             labels: {
                 boxWidth: 80,
-                fontColor: 'black'
+                fontColor: 'white'
             }
         },
         hover: {

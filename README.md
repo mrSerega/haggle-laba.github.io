@@ -1,5 +1,6 @@
 # Репозиторий с лабами по ML
 ## Лаба1:
+Датасет: https://www.kaggle.com/lava18/google-play-store-apps/version/5
 ### Как запустить
 1. Скачать `node.js`
 2. Склонировать репозиторий (https://github.com/mrSerega/mrserega.github.io)
@@ -10,3 +11,5 @@ npm i
 node index.js
 ```
 5. Перейти по адресу `127.0.0.1:3000/index.html`
+### Результат работы программы
+![line](/pics/line.png)
