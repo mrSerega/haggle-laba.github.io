@@ -13,3 +13,5 @@ node index.js
 5. Перейти по адресу `127.0.0.1:3000/index.html`
 ### Результат работы программы
 ![line](/pics/line.png)
+### Вариант на collab
+https://colab.research.google.com/drive/1NVLO1z50lZ2hbDXRjLG4X9oW1PYTRtqO
